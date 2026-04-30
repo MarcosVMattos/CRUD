@@ -30,7 +30,7 @@ def criar_tarefa(tarefa: Tarefa):
     tarefas.append(tarefa_id)
     return {"message": "Tarefa criada com sucesso"}
 
-def buscar_tarefa(id):
+def buscar_tarefa(id: int):
     for tarefa in tarefas:
         if tarefa.id == id:
             return tarefa
@@ -43,13 +43,13 @@ def buscar_tarefa(id):
 def ver_tarefas():
     return tarefas
 
-@app.get("/tarefas/{id:int}", status_code=200)
-def ver_tarefa_id(id):
+@app.get("/tarefas/{id}", status_code=200)
+def ver_tarefa_id(id: int):
     return buscar_tarefa(id)
 
         
-@app.put("/tarefas/{id:int}", status_code=200)
-def atualizar_tarefa(id, nova_tarefa: TarefaUpdate):
+@app.patch("/tarefas/{id}", status_code=200)
+def atualizar_tarefa(id: int, nova_tarefa: TarefaUpdate):
     tarefa = buscar_tarefa(id)
     if nova_tarefa.title is not None:
         if nova_tarefa.title != "":
@@ -58,8 +58,8 @@ def atualizar_tarefa(id, nova_tarefa: TarefaUpdate):
         tarefa.description = nova_tarefa.description
     return {"message": f"Tarefa {id} atualizada"}
 
-@app.delete("/tarefas/{id:int}", status_code=200)
-def deletar_tarefa(id):
+@app.delete("/tarefas/{id}", status_code=200)
+def deletar_tarefa(id: int):
     tarefa = buscar_tarefa(id)
     tarefas.remove(tarefa)
     return {"message": f"deleted successfully"}
