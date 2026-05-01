@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 
 app = FastAPI()
@@ -8,7 +8,7 @@ tarefas = []
 cont_id = 0
 
 class Tarefa(BaseModel):
-    title: str 
+    title: str = Field(min_length=1)
     description: Optional[str] = None
 
 class TarefaId(Tarefa):
@@ -28,7 +28,7 @@ def criar_tarefa(tarefa: Tarefa):
     cont_id += 1
     tarefa_id = TarefaId(id=cont_id, title=tarefa.title, description=tarefa.description)
     tarefas.append(tarefa_id)
-    return {"message": "Tarefa criada com sucesso"}
+    return tarefa_id
 
 def buscar_tarefa(id: int):
     for tarefa in tarefas:
