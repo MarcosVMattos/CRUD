@@ -52,7 +52,7 @@ def ver_tarefa_id(id: int):
 def atualizar_tarefa(id: int, nova_tarefa: TarefaUpdate):
     tarefa = buscar_tarefa(id)
     if nova_tarefa.title is not None:
-        if nova_tarefa.title != "":
+        if nova_tarefa.title.strip() != "":
             tarefa.title = nova_tarefa.title
     if nova_tarefa.description is not None:
         tarefa.description = nova_tarefa.description
