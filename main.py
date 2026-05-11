@@ -1,22 +1,9 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import Optional
+
+from storage import tarefas, cont_id
+from schemas import Tarefa, TarefaId, AtualizarTarefa
 
 app = FastAPI()
-
-tarefas = []
-cont_id = 0
-
-class Tarefa(BaseModel):
-    title: str = Field(min_length=1)
-    description: Optional[str] = None
-
-class TarefaId(Tarefa):
-    id: int
-
-class TarefaUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
 
 @app.get("/")
 def teste():
@@ -49,14 +36,14 @@ def ver_tarefa_id(id: int):
 
         
 @app.patch("/tarefas/{id}", status_code=200)
-def atualizar_tarefa(id: int, nova_tarefa: TarefaUpdate):
+def atualizar_tarefa(id: int, nova_tarefa: AtualizarTarefa):
     tarefa = buscar_tarefa(id)
     if nova_tarefa.title is not None:
         if nova_tarefa.title.strip() != "":
             tarefa.title = nova_tarefa.title
     if nova_tarefa.description is not None:
         tarefa.description = nova_tarefa.description
-    return {"message": f"Tarefa {id} atualizada"}
+    return nova_tarefa
 
 @app.delete("/tarefas/{id}", status_code=200)
 def deletar_tarefa(id: int):
