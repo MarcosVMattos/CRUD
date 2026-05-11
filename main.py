@@ -45,7 +45,7 @@ def atualizar_tarefa(id: int, nova_tarefa: AtualizarTarefa):
         tarefa.description = nova_tarefa.description
     return nova_tarefa
 
-@app.delete("/tarefas/{id}", status_code=200)
+@app.delete("/tarefas/{id}", status_code=204)
 def deletar_tarefa(id: int):
     tarefa = buscar_tarefa(id)
     tarefas.remove(tarefa)
