@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 
 from storage import tarefas, cont_id
 from schemas import Tarefa, TarefaId, AtualizarTarefa
+from services import criar_tarefa
 
 app = FastAPI()
 
@@ -10,12 +11,9 @@ def raiz():
     return {"message": "API criada com sucesso"}
 
 @app.post("/tarefas", status_code=201)
-def criar_tarefa(tarefa: Tarefa):
-    global cont_id
-    cont_id += 1
-    tarefa_id = TarefaId(id=cont_id, title=tarefa.title, description=tarefa.description)
-    tarefas.append(tarefa_id)
-    return tarefa_id
+def criar(tarefa: Tarefa):
+    return criar_tarefa(tarefa)
+    
 
 def buscar_tarefa(id: int):
     for tarefa in tarefas:
