@@ -6,8 +6,8 @@ from schemas import Tarefa, TarefaId, AtualizarTarefa
 app = FastAPI()
 
 @app.get("/")
-def teste():
-    return "API criada com sucesso"
+def raiz():
+    return {"message": "API criada com sucesso"}
 
 @app.post("/tarefas", status_code=201)
 def criar_tarefa(tarefa: Tarefa):
