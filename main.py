@@ -1,4 +1,4 @@
-from fastapi import FastAPI  # apaguei httpexception e outras coisas que eu n usava
+from fastapi import FastAPI
 
 from storage import tarefas
 from schemas import Tarefa, AtualizarTarefa
