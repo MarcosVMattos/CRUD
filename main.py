@@ -18,14 +18,14 @@ def criar(tarefa: Tarefa):
 def listar_tarefas():
     return tarefas
 
-@app.get("/tarefas/{id}", status_code=200)
-def ver_tarefa_id(id: int):
-    return buscar_tarefa(id)
+@app.get("/tarefas/{tarefa_id}", status_code=200)
+def ver_tarefa_id(tarefa_id: int):
+    return buscar_tarefa(tarefa_id)
     
-@app.patch("/tarefas/{id}", status_code=200)
-def atualizar(id: int, nova_tarefa: AtualizarTarefa):
-   return atualizar_tarefa(id, nova_tarefa)
+@app.patch("/tarefas/{tarefa_id}", status_code=200)
+def atualizar(tarefa_id: int, nova_tarefa: AtualizarTarefa):
+   return atualizar_tarefa(tarefa_id, nova_tarefa)
 
-@app.delete("/tarefas/{id}", status_code=204)
-def deletar(id: int):
-    return deletar_tarefa(id)
+@app.delete("/tarefas/{tarefa_id}", status_code=204)
+def deletar(tarefa_id: int):
+    return deletar_tarefa(tarefa_id)

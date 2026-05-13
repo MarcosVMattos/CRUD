@@ -10,17 +10,17 @@ def criar_tarefa(tarefa: Tarefa):
     tarefas.append(tarefa_id)
     return tarefa_id
 
-def buscar_tarefa(id: int):
+def buscar_tarefa(tarefa_id: int):
     for tarefa in tarefas:
-        if tarefa.id == id:
+        if tarefa.id == tarefa_id:
             return tarefa
     raise HTTPException(
         status_code=404,
         detail= "Tarefa não encontrada"
     )
 
-def atualizar_tarefa(id: int, nova_tarefa: AtualizarTarefa):
-    tarefa = buscar_tarefa(id)
+def atualizar_tarefa(tarefa_id: int, nova_tarefa: AtualizarTarefa):
+    tarefa = buscar_tarefa(tarefa_id)
     if nova_tarefa.title is not None:
         if nova_tarefa.title.strip() != "":
             tarefa.title = nova_tarefa.title
@@ -28,7 +28,7 @@ def atualizar_tarefa(id: int, nova_tarefa: AtualizarTarefa):
         tarefa.description = nova_tarefa.description
     return nova_tarefa
 
-def deletar_tarefa(id: int):
-    tarefa = buscar_tarefa(id)
+def deletar_tarefa(tarefa_id: int):
+    tarefa = buscar_tarefa(tarefa_id)
     tarefas.remove(tarefa)
     return
