@@ -10,6 +10,9 @@ def criar_tarefa(tarefa: Tarefa):
     tarefas.append(tarefa_id)
     return tarefa_id
 
+def listar_tarefas():
+    return tarefas
+
 def buscar_tarefa(tarefa_id: int):
     for tarefa in tarefas:
         if tarefa.id == tarefa_id:
