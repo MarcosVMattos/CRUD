@@ -10,5 +10,5 @@ class TarefaId(Tarefa):
     id: int
 
 class AtualizarTarefa(BaseModel):
-    title: Optional[str] = None
+    title: Optional[str] = Field(default=None, min_length=1)
     description: Optional[str] = None
