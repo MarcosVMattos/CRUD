@@ -26,7 +26,11 @@ def atualizar_tarefa(tarefa_id: int, nova_tarefa: AtualizarTarefa):
     tarefa = buscar_tarefa(tarefa_id)
     if tarefa:
         if nova_tarefa.title is not None:
-            tarefa.title = nova_tarefa.title
+            if nova_tarefa.title.strip() != "":
+                tarefa.title = nova_tarefa.title
+            else:
+                raise HTTPException(status_code=400,
+                                    detail="O campo title não pode ficar vazio")
         if nova_tarefa.description is not None:
             tarefa.description = nova_tarefa.description
     return tarefa
