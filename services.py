@@ -1,41 +1,41 @@
 from fastapi import HTTPException
 
-from storage import cont_id, tarefas
-from schemas import Tarefa, TarefaId, AtualizarTarefa
+from storage import cont_id, tasks
+from schemas import TaskCreate, TaskId, TaskUpdate
 
-def criar_tarefa(tarefa: Tarefa):
+def create_task(task: TaskCreate):
     global cont_id
     cont_id += 1
-    tarefa_id = TarefaId(id=cont_id, title=tarefa.title, description=tarefa.description)
-    tarefas.append(tarefa_id)
-    return tarefa_id
+    task_id = TaskId(id=cont_id, title=task.title, description=task.description)
+    tasks.append(task_id)
+    return task_id
 
-def listar_tarefas():
-    return tarefas
+def get_all_tasks():
+    return tasks
 
-def buscar_tarefa(tarefa_id: int):
-    for tarefa in tarefas:
-        if tarefa.id == tarefa_id:
-            return tarefa
+def get_task_by_id(task_id: int):
+    for task in tasks:
+        if task.id == task_id:
+            return task
     raise HTTPException(
         status_code=404,
         detail= "Tarefa não encontrada"
     )
 
-def atualizar_tarefa(tarefa_id: int, nova_tarefa: AtualizarTarefa):
-    tarefa = buscar_tarefa(tarefa_id)
-    if tarefa:
-        if nova_tarefa.title is not None:
-            if nova_tarefa.title.strip() != "":
-                tarefa.title = nova_tarefa.title
+def update_task(task_id: int, data: TaskUpdate):
+    task = get_task_by_id(task_id)
+    if task:
+        if data.title is not None:
+            if data.title.strip() != "":
+                task.title = data.title
             else:
                 raise HTTPException(status_code=400,
                                     detail="O campo title não pode ficar vazio")
-        if nova_tarefa.description is not None:
-            tarefa.description = nova_tarefa.description
-    return tarefa
+        if data.description is not None:
+            task.description = data.description
+    return task
 
-def deletar_tarefa(tarefa_id: int):
-    tarefa = buscar_tarefa(tarefa_id)
-    tarefas.remove(tarefa)
+def delete_task(task_id: int):
+    task = get_task_by_id(task_id)
+    tasks.remove(task)
     return

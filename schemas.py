@@ -2,13 +2,13 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-class Tarefa(BaseModel):
+class TaskCreate(BaseModel):
     title: str = Field(min_length=1)
     description: Optional[str] = None
 
-class TarefaId(Tarefa):
+class TaskId(TaskCreate):
     id: int
 
-class AtualizarTarefa(BaseModel):
+class TaskUpdate(BaseModel):
     title: Optional[str] = Field(default=None, min_length=1)
     description: Optional[str] = None

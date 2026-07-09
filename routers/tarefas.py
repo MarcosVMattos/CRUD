@@ -1,30 +1,30 @@
 from fastapi import APIRouter
 
-from schemas import Tarefa, TarefaId, AtualizarTarefa
-from services import criar_tarefa, listar_tarefas, buscar_tarefa, atualizar_tarefa, deletar_tarefa
+from schemas import TaskCreate, TaskId, TaskUpdate
+from services import create_task, get_all_tasks, get_task_by_id, update_task, delete_task
 
 router = APIRouter()
 
 @router.get("/")
-def raiz():
+def root():
     return {"message": "API criada com sucesso"}
 
-@router.post("/tarefas", status_code=201, response_model=TarefaId)
-def criar(tarefa: Tarefa):
-    return criar_tarefa(tarefa)
+@router.post("/tasks", status_code=201, response_model=TaskId)
+def create(data: TaskCreate):
+    return create_task(data)
 
-@router.get("/tarefas", status_code=200, response_model=list[TarefaId])
-def listar():
-    return listar_tarefas()
+@router.get("/tasks", status_code=200, response_model=list[TaskId])
+def get_tasks():
+    return get_all_tasks()
 
-@router.get("/tarefas/{tarefa_id}", status_code=200, response_model=TarefaId)
-def buscar(tarefa_id: int):
-    return buscar_tarefa(tarefa_id)
+@router.get("/tasks/{task_id}", status_code=200, response_model=TaskId)
+def get_task(task_id: int):
+    return get_task_by_id(task_id)
     
-@router.patch("/tarefas/{tarefa_id}", status_code=200, response_model=TarefaId)
-def atualizar(tarefa_id: int, nova_tarefa: AtualizarTarefa):
-   return atualizar_tarefa(tarefa_id, nova_tarefa)
+@router.patch("/tasks/{task_id}", status_code=200, response_model=TaskId)
+def update(task_id: int, data: TaskUpdate):
+   return update_task(task_id, data)
 
-@router.delete("/tarefas/{tarefa_id}", status_code=204)
-def deletar(tarefa_id: int):
-    return deletar_tarefa(tarefa_id)
+@router.delete("/tasks/{task_id}", status_code=204)
+def delete(task_id: int):
+    return delete_task(task_id)
