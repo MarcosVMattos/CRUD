@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers.tarefas import router
+from routers.tasks import router
 
 app = FastAPI()
 app.include_router(router=router)
