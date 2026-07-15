@@ -1,41 +1,68 @@
 from fastapi import HTTPException
 
-from storage import cont_id, tasks
+from database import SessionLocal
+from models import Task
 from schemas import TaskCreate, TaskId, TaskUpdate
 
-def create_task(task: TaskCreate):
-    global cont_id
-    cont_id += 1
-    task_id = TaskId(id=cont_id, title=task.title, description=task.description)
-    tasks.append(task_id)
-    return task_id
+def create_task(data: TaskCreate):
+    db = SessionLocal()
+    task = Task(
+        title = data.title,
+        description = data.description
+    )
+    db.add(task)
+    db.commit()
+    db.refresh(task)
+    db.close()
+    return task
 
 def get_all_tasks():
+    db = SessionLocal()
+    tasks = db.query(Task).all()
+    db.close()
     return tasks
 
 def get_task_by_id(task_id: int):
-    for task in tasks:
-        if task.id == task_id:
-            return task
+    db = SessionLocal()
+    task = db.query(Task).filter(Task.id == task_id).first()
+    db.close()
+    if task:
+        return task
     raise HTTPException(
         status_code=404,
         detail= "Tarefa não encontrada"
     )
 
 def update_task(task_id: int, data: TaskUpdate):
-    task = get_task_by_id(task_id)
+    db = SessionLocal()
+    task = db.query(Task).filter(Task.id == task_id).first()
     if task:
         if data.title is not None:
-            if data.title.strip() != "":
-                task.title = data.title
-            else:
-                raise HTTPException(status_code=400,
-                                    detail="O campo title não pode ficar vazio")
+            task.title = data.title
         if data.description is not None:
             task.description = data.description
-    return task
+        db.commit()
+        db.refresh(task)
+        db.close()
+        return task
+    else:
+        db.close()
+        raise HTTPException(
+            status_code=404,
+            detail="Tarefa não encontrada"
+        )
 
 def delete_task(task_id: int):
-    task = get_task_by_id(task_id)
-    tasks.remove(task)
-    return
+    db = SessionLocal()
+    task = db.query(Task).filter(Task.id == task_id).first()
+    if task:
+        db.delete(task)
+        db.commit()
+        db.close()
+        return
+    else:
+        db.close()
+        raise HTTPException(
+            status_code=404,
+            detail="Tarefa não encontrada"
+        )
